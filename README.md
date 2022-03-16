@@ -1,0 +1,2 @@
+# decimal
+Custom Decimal class.
