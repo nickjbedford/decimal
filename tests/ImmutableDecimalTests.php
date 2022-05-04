@@ -137,6 +137,11 @@
 			$result = $original->modulus('2.5');
 			
 			$this->assertEquals('0.611111', $result->value());
+			
+			$amount = d4('129.9523')->plus(87.5);
+			$remainder = $amount->modulus(5.5);
+			
+			$this->assertEquals('2.9523', $remainder->value());
 		}
 		
 		/**

@@ -92,6 +92,7 @@
 		 * @param string $format
 		 * @param int|null $precision
 		 * @return self
+		 * @noinspection PhpUnused
 		 */
 		public function printValue(string $format = '%s', ?int $precision = null): self
 		{
