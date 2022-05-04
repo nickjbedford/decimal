@@ -1,0 +1,211 @@
+<?php
+	use PHPUnit\Framework\TestCase;
+	use YetAnother\DecimalException;
+	use YetAnother\ImmutableDecimal;
+	
+	class ImmutableDecimalTests extends TestCase
+	{
+		/**
+		 * @throws DecimalException
+		 */
+		function testFromMixedWithValidValuesAreCorrect()
+		{
+			$int = ImmutableDecimal::from(123);
+			$float = ImmutableDecimal::from(123.456);
+			$bool = ImmutableDecimal::from(true);
+			$string = ImmutableDecimal::from('123.456789123');
+			
+			$this->assertEquals('123.000000', $int->value());
+			$this->assertEquals('123.456000', $float->value());
+			$this->assertEquals('1.000000', $bool->value());
+			$this->assertEquals('123.456789', $string->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testFromObjectThrowsException()
+		{
+			$this->expectException(Error::class);
+			
+			ImmutableDecimal::from(new stdClass());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testFromNonNumericStringThrowsException()
+		{
+			$this->expectException(DecimalException::class);
+			
+			ImmutableDecimal::from('Hello');
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testFromArrayThrowsException()
+		{
+			$this->expectException(DecimalException::class);
+			
+			ImmutableDecimal::from([ 123 ]);
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testCopyWorks()
+		{
+			$original = ImmutableDecimal::from('123.456789');
+			
+			$this->assertEquals('123.456789', $original->copy()->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testPrecisionIsCorrect()
+		{
+			$original = ImmutableDecimal::from('123.456789');
+			
+			$this->assertEquals(6, $original->precision());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testChangedPrecisionIsCorrect()
+		{
+			$original = ImmutableDecimal::from('123.456789');
+			
+			$precise = $original->toPrecision(3);
+			
+			$this->assertEquals(3, $precise->precision());
+			$this->assertEquals('123.456', $precise->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testPlusComputesCorrectly()
+		{
+			$original = ImmutableDecimal::from('123.111111');
+			$result = $original->plus('321.222222');
+			
+			$this->assertEquals('444.333333', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testMinusComputesCorrectly()
+		{
+			$original = ImmutableDecimal::from('123.111111');
+			$result = $original->minus('12.101010');
+			
+			$this->assertEquals('111.010101', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testTimesComputesCorrectly()
+		{
+			$original = ImmutableDecimal::from('123.111111');
+			$result = $original->times('2.5');
+			
+			$this->assertEquals('307.777777', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testDividedByComputesCorrectly()
+		{
+			$original = ImmutableDecimal::from('123.111111');
+			$result = $original->dividedBy('2.5');
+			
+			$this->assertEquals('49.244444', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testModulusComputesCorrectly()
+		{
+			$original = ImmutableDecimal::from('123.111111');
+			$result = $original->modulus('2.5');
+			
+			$this->assertEquals('0.611111', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testEqualityFunctionsWorkCorrectly()
+		{
+			$value = ImmutableDecimal::from('123.111111');
+			
+			$this->assertTrue($value->equals('123.111111'));
+			$this->assertTrue($value->notEquals('123.111112'));
+			$this->assertTrue($value->greaterThan('123.111110'));
+			$this->assertTrue($value->lessThan('123.111112'));
+			$this->assertTrue($value->greaterThanOrEqual('123.111110'));
+			$this->assertTrue($value->greaterThanOrEqual('123.111111'));
+			$this->assertTrue($value->lessThanOrEqual('123.111112'));
+			$this->assertTrue($value->lessThanOrEqual('123.111111'));
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testMinMaxFunctionsWorkCorrectly()
+		{
+			$value = ImmutableDecimal::from('123.111111');
+			
+			$this->assertEquals('123.111112', $value->max('123.111112')->value());
+			$this->assertEquals('123.111111', $value->min('123.111112')->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testRoundWorkCorrectly()
+		{
+			$value = ImmutableDecimal::from('123.111111');
+			$result = $value->round(3);
+			
+			$this->assertEquals('123.111000', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testFloorWorksCorrectly()
+		{
+			$value = ImmutableDecimal::from('123.111111');
+			$result = $value->floor();
+			
+			$this->assertEquals('123.000000', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testCeilWorksCorrectly()
+		{
+			$value = ImmutableDecimal::from('123.111111');
+			$result = $value->ceil();
+			
+			$this->assertEquals('124.000000', $result->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testIsIntegerWorksCorrectly()
+		{
+			$this->assertTrue(ImmutableDecimal::from('123.000')->isInteger());
+			$this->assertFalse(ImmutableDecimal::from('123.456')->isInteger());
+		}
+	}
