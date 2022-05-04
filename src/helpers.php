@@ -38,6 +38,17 @@
 	}
 	
 	/**
+	 * Creates a Decimal from a mixed value with a precision of 2 decimal places divided by 100 to create a percentage.
+	 * @param mixed $percentageValue
+	 * @return Decimal
+	 * @throws DecimalException
+	 */
+	function d2pc($percentageValue = '0'): Decimal
+	{
+		return Decimal::from($percentageValue, 2)->dividedBy(100);
+	}
+	
+	/**
 	 * Creates a Decimal from a mixed value with a precision of 3 decimal places.
 	 * @param mixed $value
 	 * @return Decimal
@@ -60,6 +71,17 @@
 	}
 	
 	/**
+	 * Creates a Decimal from a mixed value with a precision of 4 decimal places divided by 100 to create a percentage.
+	 * @param mixed $percentageValue
+	 * @return Decimal
+	 * @throws DecimalException
+	 */
+	function d4pc($percentageValue = '0'): Decimal
+	{
+		return Decimal::from($percentageValue, 4)->dividedBy(100);
+	}
+	
+	/**
 	 * Creates a Decimal from a mixed value with a precision of 5 decimal places.
 	 * @param mixed $value
 	 * @return Decimal
@@ -79,4 +101,15 @@
 	function d6($value = '0'): Decimal
 	{
 		return Decimal::from($value, 6);
+	}
+	
+	/**
+	 * Creates a Decimal from a mixed value with a precision of 6 decimal places divided by 100 to create a percentage.
+	 * @param mixed $percentageValue
+	 * @return Decimal
+	 * @throws DecimalException
+	 */
+	function d6pc($percentageValue = '0'): Decimal
+	{
+		return Decimal::from($percentageValue, 6)->dividedBy(100);
 	}
