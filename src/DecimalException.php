@@ -6,7 +6,6 @@
 
 	/**
 	 * Represents an exception thrown in the Decimal class.
-	 * @package App\Library
 	 */
 	class DecimalException extends Exception
 	{

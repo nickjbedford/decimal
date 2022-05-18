@@ -7,7 +7,6 @@
 
 	/**
 	 * Represents an immutable decimal value, defaulting to a high precision of six decimal places.
-	 * @package App\Library
 	 */
 	class ImmutableDecimal
 	{
