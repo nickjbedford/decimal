@@ -86,6 +86,17 @@
 				'precision' => $this->precision
 			];
 		}
+		
+		/**
+		 * Returns a similar decimal instance with a new value.
+		 * @param mixed $value
+		 * @return static
+		 * @noinspection PhpMissingReturnTypeInspection
+		 */
+		private function similar($value)
+		{
+			return new static($value, $this->precision);
+		}
 
 		/**
 		 * Prints the value with an optional custom precision.
@@ -151,7 +162,7 @@
 		 */
 		public function plus($value)
 		{
-			return new static(bcadd($this->value, static::valueFrom($value), $this->precision), $this->precision);
+			return $this->similar(bcadd($this->value, static::valueFrom($value), $this->precision));
 		}
 
 		/**
@@ -163,7 +174,7 @@
 		 */
 		public function minus($value)
 		{
-			return new static(bcsub($this->value, static::valueFrom($value), $this->precision), $this->precision);
+			return $this->similar(bcsub($this->value, static::valueFrom($value), $this->precision));
 		}
 
 		/**
@@ -175,7 +186,7 @@
 		 */
 		public function times($factor)
 		{
-			return new static(bcmul($this->value, static::valueFrom($factor), $this->precision), $this->precision);
+			return $this->similar(bcmul($this->value, static::valueFrom($factor), $this->precision));
 		}
 
 		/**
@@ -186,7 +197,7 @@
 		 */
 		public function dividedBy($divisor): self
 		{
-			return new static(bcdiv($this->value, static::valueFrom($divisor), $this->precision), $this->precision);
+			return $this->similar(bcdiv($this->value, static::valueFrom($divisor), $this->precision));
 		}
 
 		/**
@@ -210,7 +221,32 @@
 		 */
 		public function modulus($divisor)
 		{
-			return new static(bcmod($this->value, static::valueFrom($divisor), $this->precision), $this->precision);
+			return $this->similar(bcmod($this->value, static::valueFrom($divisor), $this->precision));
+		}
+
+		/**
+		 * Returns the modulus of the decimal with a divisor.
+		 * @param mixed $divisor
+		 * @return static
+		 * @throws DecimalException
+		 * @noinspection PhpMissingReturnTypeInspection
+		 * @noinspection PhpUnused
+		 */
+		public function mod($divisor)
+		{
+			return $this->modulus($divisor);
+		}
+
+		/**
+		 * Determines if the decimal is equal to another value.
+		 * @param mixed $value
+		 * @return bool
+		 * @throws DecimalException
+		 * @noinspection PhpUnused
+		 */
+		public function equalTo($value): bool
+		{
+			return $this->equals($value);
 		}
 
 		/**
@@ -290,7 +326,7 @@
 		public function min($value): self
 		{
 			$value = static::valueFrom($value, $this->precision);
-			return new static(bccomp($this->value, $value, $this->precision) < 0 ? $this->value : $value);
+			return $this->similar(bccomp($this->value, $value, $this->precision) < 0 ? $this->value : $value);
 		}
 
 		/**
@@ -302,7 +338,7 @@
 		public function max($value): self
 		{
 			$value = static::valueFrom($value, $this->precision);
-			return new static(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);
+			return $this->similar(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);
 		}
 		
 		/**
@@ -313,7 +349,6 @@
 		{
 			return $this->max($min)->min($max);
 		}
-		
 
 		/**
 		 * Returns the decimal rounded to a certain precision.
@@ -328,7 +363,7 @@
 			$whole = $mod < 5 ?
 				bcsub($whole, $mod, 0) :
 				bcadd($whole, 10 - $mod, 0);
-			return new static(bcdiv($whole, $multiplier, $this->precision), $this->precision);
+			return $this->similar(bcdiv($whole, $multiplier, $this->precision));
 		}
 
 		/**
@@ -337,7 +372,7 @@
 		 */
 		public function floor(): self
 		{
-			return new self(bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision), $this->precision);
+			return $this->similar(bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision));
 		}
 
 		/**
@@ -349,7 +384,7 @@
 			$floor = bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision);
 			if (bccomp($this->value, $floor, $this->precision) !== 0)
 				$floor = bcadd($floor, '1', $this->precision);
-			return new static($floor, $this->precision);
+			return $this->similar($floor);
 		}
 
 		/**
