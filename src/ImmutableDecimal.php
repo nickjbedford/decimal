@@ -190,6 +190,17 @@
 		}
 
 		/**
+		 * Returns a new decimal with the value divided by another.
+		 * @param mixed $divisor
+		 * @return static
+		 * @throws DecimalException
+		 */
+		public function over($divisor): self
+		{
+			return $this->dividedBy($divisor);
+		}
+
+		/**
 		 * Returns the modulus of the decimal with a divisor.
 		 * @param mixed $divisor
 		 * @return static
