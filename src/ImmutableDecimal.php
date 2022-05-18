@@ -194,6 +194,7 @@
 		 * @param mixed $divisor
 		 * @return static
 		 * @throws DecimalException
+		 * @noinspection PhpUnused
 		 */
 		public function over($divisor): self
 		{
@@ -303,6 +304,16 @@
 			$value = static::valueFrom($value, $this->precision);
 			return new static(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);
 		}
+		
+		/**
+		 * Clamps the value between a minimum and maximum.
+		 * @throws DecimalException
+		 */
+		public function clamp($min, $max): self
+		{
+			return $this->max($min)->min($max);
+		}
+		
 
 		/**
 		 * Returns the decimal rounded to a certain precision.

@@ -175,6 +175,18 @@
 		/**
 		 * @throws DecimalException
 		 */
+		function testClampFunctionsWorkCorrectly()
+		{
+			$value = ImmutableDecimal::from(100);
+			
+			$this->assertEquals('123.111112', $value->clamp('123.111112', '124'));
+			$this->assertEquals('99.883833', $value->clamp('97', '99.883833'));
+			$this->assertEquals('100.000000', $value->clamp('97', '129.883833'));
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
 		function testRoundWorkCorrectly()
 		{
 			$value = ImmutableDecimal::from('123.111111');
