@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpMissingReturnTypeInspection */
+	
 	/** @noinspection PhpReturnDocTypeMismatchInspection */
 	
 	namespace YetAnother;
@@ -113,7 +114,7 @@
 		/**
 		 * Creates a copy of the decimal with an optional change to the precision.
 		 * @param int|null $precision
-		 * @return ImmutableDecimal|Decimal
+		 * @return static
 		 */
 		public function copy(?int $precision = null)
 		{
@@ -132,9 +133,9 @@
 		/**
 		 * Creates a copy of the decimal with a new precision.
 		 * @param int $precision
-		 * @return self
+		 * @return static
 		 */
-		public function toPrecision(int $precision): self
+		public function toPrecision(int $precision)
 		{
 			$precision = max(0, $precision);
 			return new static($this->value, $precision);
@@ -194,7 +195,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function dividedBy($divisor): self
+		public function dividedBy($divisor)
 		{
 			return $this->similar(bcdiv($this->value, static::valueFrom($divisor), $this->precision));
 		}
@@ -206,7 +207,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpUnused
 		 */
-		public function over($divisor): self
+		public function over($divisor)
 		{
 			return $this->dividedBy($divisor);
 		}
@@ -322,7 +323,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function min($value): self
+		public function min($value)
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) < 0 ? $this->value : $value);
@@ -334,7 +335,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function max($value): self
+		public function max($value)
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);
@@ -344,7 +345,7 @@
 		 * Clamps the value between a minimum and maximum.
 		 * @throws DecimalException
 		 */
-		public function clamp($min, $max): self
+		public function clamp($min, $max)
 		{
 			return $this->max($min)->min($max);
 		}
@@ -354,7 +355,7 @@
 		 * @param int $precision
 		 * @return static
 		 */
-		public function round(int $precision = 0): self
+		public function round(int $precision = 0)
 		{
 			$multiplier = bcpow(10, $precision + 1, 0);
 			$whole = bcmul($this->value, $multiplier, 0);
@@ -367,18 +368,18 @@
 
 		/**
 		 * Returns the decimal, rounded down to the nearest whole number.
-		 * @return self
+		 * @return static
 		 */
-		public function floor(): self
+		public function floor()
 		{
 			return $this->similar(bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision));
 		}
 
 		/**
 		 * Returns the decimal, rounded up to the nearest whole number.
-		 * @return self
+		 * @return static
 		 */
-		public function ceil(): self
+		public function ceil()
 		{
 			$floor = bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision);
 			if (bccomp($this->value, $floor, $this->precision) !== 0)
