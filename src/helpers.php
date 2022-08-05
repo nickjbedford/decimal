@@ -113,3 +113,25 @@
 	{
 		return Decimal::from($percentageValue, 6)->dividedBy(100);
 	}
+	
+	/**
+	 * Creates a Decimal from a mixed value with a precision of 7 decimal places.
+	 * @param mixed $value
+	 * @return Decimal
+	 * @throws DecimalException
+	 */
+	function d7($value = '0'): Decimal
+	{
+		return Decimal::from($value, 7);
+	}
+	
+	/**
+	 * Creates a Decimal from a mixed value with a precision of 8 decimal places.
+	 * @param mixed $value
+	 * @return Decimal
+	 * @throws DecimalException
+	 */
+	function d8($value = '0'): Decimal
+	{
+		return Decimal::from($value, 8);
+	}
