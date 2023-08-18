@@ -2,9 +2,23 @@
 	use PHPUnit\Framework\TestCase;
 	use YetAnother\Decimal;
 	use YetAnother\DecimalException;
+	use YetAnother\ImmutableDecimal;
 	
 	class MutableDecimalTests extends TestCase
 	{
+		/**
+		 * @throws DecimalException
+		 */
+		function testImmutableIsCopiedCorrectlyIntoMutableDecimal()
+		{
+			$a = ImmutableDecimal::from('123.456');
+			$b = d3($a);
+			
+			$this->assertInstanceOf(Decimal::class, $b);
+			$this->assertEquals('123.456', $b->value());
+			$this->assertEquals(3, $b->precision());
+		}
+		
 		/**
 		 * @throws DecimalException
 		 */

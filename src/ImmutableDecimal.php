@@ -30,7 +30,7 @@
 		{
 			$precision = $precision ?? self::DefaultPrecision;
 			if ($mixed instanceof ImmutableDecimal)
-				return $mixed->copy($precision);
+				return new static($mixed->value, $precision);
 			return new static(static::valueFrom($mixed, $precision), $precision);
 		}
 
