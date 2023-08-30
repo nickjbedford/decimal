@@ -396,4 +396,22 @@
 		{
 			return $this->equals($this->floor());
 		}
+		
+		/**
+		 * Converts the decimal to an integer.
+		 * @return int
+		 */
+		public function toInteger(): int
+		{
+			return intval($this->value);
+		}
+		
+		/**
+		 * Converts the decimal to an floating-point value.
+		 * @return float
+		 */
+		public function toFloat(): float
+		{
+			return floatval($this->value);
+		}
 	}
