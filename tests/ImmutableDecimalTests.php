@@ -26,7 +26,7 @@
 		 */
 		function testFromObjectThrowsException()
 		{
-			$this->expectException(Error::class);
+			$this->expectException(DecimalException::class);
 			
 			ImmutableDecimal::from(new stdClass());
 		}
@@ -224,5 +224,14 @@
 		{
 			$this->assertTrue(ImmutableDecimal::from('123.000')->isInteger());
 			$this->assertFalse(ImmutableDecimal::from('123.456')->isInteger());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testDollarsToCentsWorksCorrectly()
+		{
+			$this->assertEquals('15358', d2('153.58')->dollarsToCents());
+			$this->assertEquals('30', d2('0.30')->dollarsToCents());
 		}
 	}

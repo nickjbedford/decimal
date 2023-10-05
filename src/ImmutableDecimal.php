@@ -4,8 +4,8 @@
 	
 	namespace YetAnother;
 
-	use Exception;
-
+	use Throwable;
+	
 	/**
 	 * Represents an immutable decimal value, defaulting to a high precision of six decimal places.
 	 */
@@ -49,7 +49,7 @@
 			{
 				return bcadd(strval($mixed) ?? '0', '0', $precision ?? self::DefaultPrecision);
 			}
-			catch(Exception $exception)
+			catch(Throwable $exception)
 			{
 				throw new DecimalException($exception->getMessage(), $exception->getCode(), $exception);
 			}
@@ -413,5 +413,17 @@
 		public function toFloat(): float
 		{
 			return floatval($this->value);
+		}
+		
+		/**
+		 * Assuming the decimal represents dollars and cents in fractional form,
+		 * this converts it to whole cents. For example, the decimal "128.49" is returned
+		 * as a string of "12849".
+		 * @return string
+		 * @throws DecimalException
+		 */
+		public function dollarsToCents(): string
+		{
+			return $this->times(100)->value(0);
 		}
 	}
