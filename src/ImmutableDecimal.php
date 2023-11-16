@@ -426,4 +426,48 @@
 		{
 			return $this->times(100)->value(0);
 		}
+		
+		/**
+		 * Assuming the decimal represents cents in whole form (100 cents = 1.00 dollars),
+		 * this converts it to fractional dollars. For example, the decimal 12849 cents
+		 * is returned as a string of "128.49".
+		 * @return string
+		 * @throws DecimalException
+		 */
+		public function centsToDollars(): string
+		{
+			return $this->over(100)->value(2);
+		}
+		
+		/**
+		 * Formats a decimal number with grouped thousands.
+		 * @param int|null $precision The precision of the resulting decimal number.
+		 * @param string $decimalPoint The character to use for the decimal point.
+		 * @param string $thousandsSeparator The character to use for the thousands separator.
+		 * @param string $currencySymbol The currency symbol to use after the sign character.
+		 * @return string The format decimal number.
+		 */
+		public function format(?int $precision = null, string $decimalPoint = '.', string $thousandsSeparator = ',', string $currencySymbol = ''): string
+		{
+			$precision ??= $this->precision;
+			$number = $this->value($precision);
+			
+			// remove negative sign for later
+			if ($negative = $number[0] == '-')
+				$number = substr($number, 1);
+			
+			// get integer component
+			$whole = bcadd($number, 0);
+			
+			// get fraction component
+			$fraction = explode('.', bcsub($number, $whole, $precision));
+			$fraction = end($fraction);
+			
+			// generate formatted components
+			$sign = $negative ? "-$currencySymbol" : $currencySymbol;
+			$integer = strrev(implode($thousandsSeparator, str_split(strrev($whole), 3)));
+			$fraction = $precision > 0 ? ($decimalPoint . $fraction) : '';
+			
+			return $sign . $integer . $fraction;
+		}
 	}

@@ -234,4 +234,62 @@
 			$this->assertEquals('15358', d2('153.58')->dollarsToCents());
 			$this->assertEquals('30', d2('0.30')->dollarsToCents());
 		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		static function formatDataProvider(): array
+		{
+			return [
+				[ '1', d0(1)->format() ],
+				[ '123', d0(123)->format() ],
+				[ '123,456', d0(123456)->format() ],
+				[ '12,345,678', d0(12345678)->format() ],
+				
+				[ '$1', d0(1)->format(null, '.', ',', '$') ],
+				[ '$123', d0(123)->format(null, '.', ',', '$') ],
+				[ '$123,456', d0(123456)->format(null, '.', ',', '$') ],
+				[ '$12,345,678', d0(12345678)->format(null, '.', ',', '$') ],
+				
+				[ '-1', d0(-1)->format() ],
+				[ '-123', d0(-123)->format() ],
+				[ '-123,456', d0(-123456)->format() ],
+				[ '-12,345,678', d0(-12345678)->format() ],
+				
+				[ '-$1', d0(-1)->format(null, '.', ',', '$') ],
+				[ '-$123', d0(-123)->format(null, '.', ',', '$') ],
+				[ '-$123,456', d0(-123456)->format(null, '.', ',', '$') ],
+				[ '-$12,345,678', d0(-12345678)->format(null, '.', ',', '$') ],
+				
+				[ '1.90', d2(1.9)->format() ],
+				[ '123.90', d2(123.9)->format() ],
+				[ '123,456.90', d2(123456.9)->format() ],
+				[ '12,345,678.90', d2(12345678.9)->format() ],
+				
+				[ '$1.90', d2(1.9)->format(null, '.', ',', '$') ],
+				[ '$123.90', d2(123.9)->format(null, '.', ',', '$') ],
+				[ '$123,456.90', d2(123456.9)->format(null, '.', ',', '$') ],
+				[ '$12,345,678.90', d2(12345678.9)->format(null, '.', ',', '$') ],
+				
+				[ '-1.90', d2(-1.9)->format() ],
+				[ '-123.90', d2(-123.9)->format() ],
+				[ '-123,456.90', d2(-123456.9)->format() ],
+				[ '-12,345,678.90', d2(-12345678.9)->format() ],
+				
+				[ '-$1.90', d2(-1.9)->format(null, '.', ',', '$') ],
+				[ '-$123.90', d2(-123.9)->format(null, '.', ',', '$') ],
+				[ '-$123,456.90', d2(-123456.9)->format(null, '.', ',', '$') ],
+				[ '-$12,345,678.90', d2(-12345678.9)->format(null, '.', ',', '$') ],
+				
+				[ '-$1,812,933.9472', d4(-1812933.9472)->format(null, '.', ',', '$') ],
+			];
+		}
+		
+		/**
+		 * @dataProvider formatDataProvider
+		 */
+		function testFormatCreatesCorrectStrings(string $expected, string $actual)
+		{
+			$this->assertEquals($expected, $actual);
+		}
 	}
