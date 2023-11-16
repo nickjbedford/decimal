@@ -286,6 +286,9 @@
 				[ '-$12,345,678.90', d2(-12345678.9)->format(null, '.', ',', '$') ],
 				
 				[ '-$1,812,933.9472', d4(-1812933.9472)->format(null, '.', ',', '$') ],
+				[ '-', d2(0)->format(zeroFormat: '-') ],
+				[ '$(125.95)', d2(-125.95)->format(currencySymbol: '$', negativeFormat: '{currency}({value})') ],
+				[ 'AUD $125.95', d2(125.95)->format(currencySymbol: '$', positiveFormat: 'AUD {currency}{value}') ],
 			];
 		}
 		

@@ -446,14 +446,24 @@
 		 * @param string $thousandsSeparator The character to use for the thousands separator.
 		 * @param string $currencySymbol The currency symbol to use after the sign character.
 		 * @return string The format decimal number.
+		 * @throws DecimalException
 		 */
-		public function format(?int $precision = null, string $decimalPoint = '.', string $thousandsSeparator = ',', string $currencySymbol = ''): string
+		public function format(
+			?int $precision = null,
+			string $decimalPoint = '.',
+			string $thousandsSeparator = ',',
+			string $currencySymbol = '',
+			string $positiveFormat = '{currency}{value}',
+			string $negativeFormat = '-{currency}{value}',
+			string $zeroFormat = '{currency}{value}'): string
 		{
 			$precision ??= $this->precision;
-			$number = $this->value($precision);
+			$value = $this->toPrecision($precision);
+			$isZero = $value->equals(0);
+			$number = $value->value($precision);
 			
 			// remove negative sign for later
-			if ($negative = $number[0] == '-')
+			if ($negative = $value->lessThan(0))
 				$number = substr($number, 1);
 			
 			// get integer component
@@ -463,11 +473,12 @@
 			$fraction = explode('.', bcsub($number, $whole, $precision));
 			$fraction = end($fraction);
 			
-			// generate formatted components
-			$sign = $negative ? "-$currencySymbol" : $currencySymbol;
+			// generate formatted amount
 			$integer = strrev(implode($thousandsSeparator, str_split(strrev($whole), 3)));
 			$fraction = $precision > 0 ? ($decimalPoint . $fraction) : '';
+			$number = $integer . $fraction;
+			$format = $negative ? $negativeFormat : ($isZero ? $zeroFormat : $positiveFormat);
 			
-			return $sign . $integer . $fraction;
+			return str_replace(['{currency}', '{value}'], [$currencySymbol, $number], $format);
 		}
 	}
