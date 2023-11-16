@@ -26,7 +26,7 @@
 		 * @return Decimal|ImmutableDecimal
 		 * @throws DecimalException
 		 */
-		public static function from($mixed, ?int $precision = null)
+		public static function from(mixed $mixed, ?int $precision = null)
 		{
 			$precision = $precision ?? self::DefaultPrecision;
 			if ($mixed instanceof ImmutableDecimal)
@@ -41,7 +41,7 @@
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public static function valueFrom($mixed, ?int $precision = null): string
+		public static function valueFrom(mixed $mixed, ?int $precision = null): string
 		{
 			if ($mixed instanceof ImmutableDecimal)
 				$mixed = $mixed->value;
@@ -93,7 +93,7 @@
 		 * @return static
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		private function similar($value)
+		private function similar(mixed $value)
 		{
 			return new static($value, $this->precision);
 		}
@@ -160,7 +160,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function plus($value)
+		public function plus(mixed $value)
 		{
 			return $this->similar(bcadd($this->value, static::valueFrom($value), $this->precision));
 		}
@@ -172,7 +172,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function minus($value)
+		public function minus(mixed $value)
 		{
 			return $this->similar(bcsub($this->value, static::valueFrom($value), $this->precision));
 		}
@@ -184,7 +184,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function times($factor)
+		public function times(mixed $factor)
 		{
 			return $this->similar(bcmul($this->value, static::valueFrom($factor), $this->precision));
 		}
@@ -195,7 +195,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function dividedBy($divisor)
+		public function dividedBy(mixed $divisor)
 		{
 			return $this->similar(bcdiv($this->value, static::valueFrom($divisor), $this->precision));
 		}
@@ -207,7 +207,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpUnused
 		 */
-		public function over($divisor)
+		public function over(mixed $divisor)
 		{
 			return $this->dividedBy($divisor);
 		}
@@ -219,7 +219,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function modulus($divisor)
+		public function modulus(mixed $divisor)
 		{
 			return $this->similar(bcmod($this->value, static::valueFrom($divisor), $this->precision));
 		}
@@ -232,7 +232,7 @@
 		 * @noinspection PhpMissingReturnTypeInspection
 		 * @noinspection PhpUnused
 		 */
-		public function mod($divisor)
+		public function mod(mixed $divisor)
 		{
 			return $this->modulus($divisor);
 		}
@@ -244,7 +244,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpUnused
 		 */
-		public function equalTo($value): bool
+		public function equalTo(mixed $value): bool
 		{
 			return $this->equals($value);
 		}
@@ -255,7 +255,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function equals($value): bool
+		public function equals(mixed $value): bool
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return bccomp($this->value, $value, $this->precision) == 0;
@@ -267,7 +267,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function notEquals($value): bool
+		public function notEquals(mixed $value): bool
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return bccomp($this->value, $value, $this->precision) != 0;
@@ -279,7 +279,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function lessThan($value): bool
+		public function lessThan(mixed $value): bool
 		{
 			return bccomp($this->value, static::valueFrom($value, $this->precision), $this->precision) < 0;
 		}
@@ -290,7 +290,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function lessThanOrEqual($value): bool
+		public function lessThanOrEqual(mixed $value): bool
 		{
 			return bccomp($this->value, static::valueFrom($value, $this->precision), $this->precision) <= 0;
 		}
@@ -301,7 +301,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function greaterThan($value): bool
+		public function greaterThan(mixed $value): bool
 		{
 			return bccomp($this->value, static::valueFrom($value, $this->precision), $this->precision) > 0;
 		}
@@ -312,7 +312,7 @@
 		 * @return bool
 		 * @throws DecimalException
 		 */
-		public function greaterThanOrEqual($value): bool
+		public function greaterThanOrEqual(mixed $value): bool
 		{
 			return bccomp($this->value, static::valueFrom($value, $this->precision), $this->precision) >= 0;
 		}
@@ -323,7 +323,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function min($value)
+		public function min(mixed $value)
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) < 0 ? $this->value : $value);
@@ -335,7 +335,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function max($value)
+		public function max(mixed $value)
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);

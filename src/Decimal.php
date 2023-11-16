@@ -4,6 +4,8 @@
 	
 	namespace YetAnother;
 
+	use DivisionByZeroError;
+	
 	/**
 	 * Represents a decimal value, defaulting to a high precision of six decimal places.
 	 */
@@ -15,7 +17,7 @@
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public function add($value): self
+		public function add(mixed $value): self
 		{
 			$this->value = bcadd($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -27,7 +29,7 @@
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public function sub($value): self
+		public function sub(mixed $value): self
 		{
 			$this->value = bcsub($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -39,7 +41,7 @@
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public function mul($value): self
+		public function mul(mixed $value): self
 		{
 			$this->value = bcmul($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -51,12 +53,16 @@
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public function div($value): self
+		public function div(mixed $value): self
 		{
-			$result = bcdiv($this->value, self::valueFrom($value, $this->precision), $this->precision);
-			if ($result === null)
-				throw new DecimalException('Decimal divide operation failed.');
-			$this->value = $result;
-			return $this;
+			try
+			{
+				$this->value = bcdiv($this->value, self::valueFrom($value, $this->precision), $this->precision);
+				return $this;
+			}
+			catch (DivisionByZeroError $exception)
+			{
+				throw new DecimalException('Decimal divide operation failed.', 0, $exception);
+			}
 		}
 	}

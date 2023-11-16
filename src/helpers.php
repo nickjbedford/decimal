@@ -10,7 +10,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d0($value = '0'): Decimal
+	function d0(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 0);
 	}
@@ -21,7 +21,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d1($value = '0'): Decimal
+	function d1(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 1);
 	}
@@ -32,7 +32,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d2($value = '0'): Decimal
+	function d2(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 2);
 	}
@@ -43,7 +43,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d2pc($percentageValue = '0'): Decimal
+	function d2pc(mixed $percentageValue = '0'): Decimal
 	{
 		return Decimal::from($percentageValue, 2)->dividedBy(100);
 	}
@@ -54,7 +54,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d3($value = '0'): Decimal
+	function d3(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 3);
 	}
@@ -65,7 +65,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d4($value = '0'): Decimal
+	function d4(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 4);
 	}
@@ -76,7 +76,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d4pc($percentageValue = '0'): Decimal
+	function d4pc(mixed $percentageValue = '0'): Decimal
 	{
 		return Decimal::from($percentageValue, 4)->dividedBy(100);
 	}
@@ -87,7 +87,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d5($value = '0'): Decimal
+	function d5(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 5);
 	}
@@ -98,7 +98,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d6($value = '0'): Decimal
+	function d6(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 6);
 	}
@@ -109,7 +109,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d6pc($percentageValue = '0'): Decimal
+	function d6pc(mixed $percentageValue = '0'): Decimal
 	{
 		return Decimal::from($percentageValue, 6)->dividedBy(100);
 	}
@@ -120,7 +120,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d7($value = '0'): Decimal
+	function d7(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 7);
 	}
@@ -131,7 +131,7 @@
 	 * @return Decimal
 	 * @throws DecimalException
 	 */
-	function d8($value = '0'): Decimal
+	function d8(mixed $value = '0'): Decimal
 	{
 		return Decimal::from($value, 8);
 	}

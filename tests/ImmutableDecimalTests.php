@@ -222,8 +222,10 @@
 		 */
 		function testIsIntegerWorksCorrectly()
 		{
+			$this->assertSame(123, ImmutableDecimal::from('123.456')->toInteger());
 			$this->assertTrue(ImmutableDecimal::from('123.000')->isInteger());
 			$this->assertFalse(ImmutableDecimal::from('123.456')->isInteger());
+			$this->assertSame(123.45, ImmutableDecimal::from('123.45')->toFloat());
 		}
 		
 		/**
@@ -233,6 +235,8 @@
 		{
 			$this->assertEquals('15358', d2('153.58')->dollarsToCents());
 			$this->assertEquals('30', d2('0.30')->dollarsToCents());
+			$this->assertEquals('153.58', d2(15358)->centsToDollars());
+			$this->assertEquals('0.30', d2(30)->centsToDollars());
 		}
 		
 		/**
