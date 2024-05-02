@@ -299,4 +299,10 @@
 		{
 			$this->assertEquals($expected, $actual);
 		}
+		
+		function testAbsoluteWorks()
+		{
+			$this->assertEquals('123.45', d2('-123.45')->absolute()->value());
+			$this->assertEquals('123.45', d2('123.45')->absolute()->value());
+		}
 	}

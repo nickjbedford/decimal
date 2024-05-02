@@ -440,6 +440,17 @@
 		}
 		
 		/**
+		 * Returns the absolute value of the decimal.
+		 * @throws DecimalException
+		 */
+		public function absolute(): static
+		{
+			if ($this->lessThan(0))
+				return $this->times(-1);
+			return $this->copy();
+		}
+		
+		/**
 		 * Formats a decimal number with grouped thousands.
 		 * @param int|null $precision The precision of the resulting decimal number.
 		 * @param string $decimalPoint The character to use for the decimal point.
