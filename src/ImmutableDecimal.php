@@ -451,6 +451,15 @@
 		}
 		
 		/**
+		 * Returns the reciprocal of the decimal.
+		 * @throws DecimalException
+		 */
+		public function reciprocal(): static
+		{
+			return $this->similar(1)->over($this);
+		}
+		
+		/**
 		 * Formats a decimal number with grouped thousands.
 		 * @param int|null $precision The precision of the resulting decimal number.
 		 * @param string $decimalPoint The character to use for the decimal point.

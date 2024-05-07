@@ -305,4 +305,13 @@
 			$this->assertEquals('123.45', d2('-123.45')->absolute()->value());
 			$this->assertEquals('123.45', d2('123.45')->absolute()->value());
 		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testReciprocalWorks()
+		{
+			$this->assertEquals('0.125', d3('8')->reciprocal()->value());
+			$this->assertEquals('8.000', d3('8')->reciprocal()->reciprocal()->value());
+		}
 	}
