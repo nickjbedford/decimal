@@ -14,11 +14,13 @@
 			$float = ImmutableDecimal::from(123.456);
 			$bool = ImmutableDecimal::from(true);
 			$string = ImmutableDecimal::from('123.456789123');
+			$invalid = ImmutableDecimal::fromNoThrow('ad', 2);
 			
 			$this->assertEquals('123.000000', $int->value());
 			$this->assertEquals('123.456000', $float->value());
 			$this->assertEquals('1.000000', $bool->value());
 			$this->assertEquals('123.456789', $string->value());
+			$this->assertEquals('0.00', $invalid->value());
 		}
 		
 		/**

@@ -23,15 +23,36 @@
 		 * Creates a Decimal from a mixed input value, optionally with a custom precision.
 		 * @param mixed $mixed
 		 * @param int|null $precision
-		 * @return Decimal|ImmutableDecimal
+		 * @return static
 		 * @throws DecimalException
 		 */
-		public static function from(mixed $mixed, ?int $precision = null)
+		public static function from(mixed $mixed, ?int $precision = null): static
 		{
 			$precision = $precision ?? self::DefaultPrecision;
 			if ($mixed instanceof ImmutableDecimal)
 				return new static($mixed->value, $precision ?? $mixed->precision);
 			return new static(static::valueFrom($mixed, $precision), $precision);
+		}
+
+		/**
+		 * Creates a Decimal from a mixed input value, optionally with a custom precision.
+		 * @param mixed $mixed
+		 * @param int|null $precision
+		 * @return static
+		 */
+		public static function fromNoThrow(mixed $mixed, ?int $precision = null): static
+		{
+			try
+			{
+				$precision ??= self::DefaultPrecision;
+				if ($mixed instanceof ImmutableDecimal)
+					return new static($mixed->value, $precision ?? $mixed->precision);
+				return new static(static::valueFrom($mixed, $precision), $precision);
+			}
+			catch(Throwable)
+			{
+				return new static('0', $precision);
+			}
 		}
 
 		/**
