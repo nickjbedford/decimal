@@ -57,22 +57,22 @@
 
 		/**
 		 * Converts a mixed input value a decimal string value usable in the BC math library.
-		 * @param mixed $mixed
+		 * @param mixed $value
 		 * @param int|null $precision
 		 * @return self
 		 * @throws DecimalException
 		 */
-		public static function valueFrom(mixed $mixed, ?int $precision = null): string
+		public static function valueFrom(mixed $value, ?int $precision = null): string
 		{
-			if ($mixed instanceof ImmutableDecimal)
-				$mixed = $mixed->value;
+			if ($value instanceof ImmutableDecimal)
+				$value = $value->value;
 			try
 			{
-				return bcadd(strval($mixed) ?? '0', '0', $precision ?? self::DefaultPrecision);
+				return bcadd(strval($value) ?? '0', '0', $precision ?? self::DefaultPrecision);
 			}
 			catch(Throwable $exception)
 			{
-				throw new DecimalException($exception->getMessage(), $exception->getCode(), $exception);
+				throw new DecimalException($exception->getMessage(), $exception->getCode(), $exception, $value);
 			}
 		}
 

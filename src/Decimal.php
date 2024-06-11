@@ -62,7 +62,7 @@
 			}
 			catch (DivisionByZeroError $exception)
 			{
-				throw new DecimalException('Decimal divide operation failed.', 0, $exception);
+				throw new DecimalException('Decimal divide operation failed.', 0, $exception, $value);
 			}
 		}
 	}
