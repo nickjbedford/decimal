@@ -419,6 +419,33 @@
 		}
 		
 		/**
+		 * Determines if the decimal is greater than zero.
+		 * @throws DecimalException
+		 */
+		public function isPositive(): bool
+		{
+			return $this->greaterThan(0);
+		}
+		
+		/**
+		 * Determines if the decimal is less than zero.
+		 * @throws DecimalException
+		 */
+		public function isNegative(): bool
+		{
+			return $this->lessThan(0);
+		}
+		
+		/**
+		 * Determines if the decimal is zero.
+		 * @throws DecimalException
+		 */
+		public function isZero(): bool
+		{
+			return $this->equals(0);
+		}
+		
+		/**
 		 * Converts the decimal to an integer.
 		 * @return int
 		 */
