@@ -14,10 +14,10 @@
 		/**
 		 * Adds a value to the decimal value.
 		 * @param mixed $value
-		 * @return self
+		 * @return static
 		 * @throws DecimalException
 		 */
-		public function add(mixed $value): self
+		public function add(mixed $value): static
 		{
 			$this->value = bcadd($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -26,10 +26,10 @@
 		/**
 		 * Subtracts a value from the decimal value.
 		 * @param mixed $value
-		 * @return self
+		 * @return static
 		 * @throws DecimalException
 		 */
-		public function sub(mixed $value): self
+		public function sub(mixed $value): static
 		{
 			$this->value = bcsub($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -38,10 +38,10 @@
 		/**
 		 * Multiples the decimal by a value (mutable).
 		 * @param mixed $value
-		 * @return self
+		 * @return static
 		 * @throws DecimalException
 		 */
-		public function mul(mixed $value): self
+		public function mul(mixed $value): static
 		{
 			$this->value = bcmul($this->value, self::valueFrom($value, $this->precision), $this->precision);
 			return $this;
@@ -50,10 +50,10 @@
 		/**
 		 * Divides the decimal by a value (mutable).
 		 * @param mixed $value
-		 * @return self
+		 * @return static
 		 * @throws DecimalException
 		 */
-		public function div(mixed $value): self
+		public function div(mixed $value): static
 		{
 			try
 			{

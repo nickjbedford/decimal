@@ -79,11 +79,25 @@
 		function testChangedPrecisionIsCorrect()
 		{
 			$original = ImmutableDecimal::from('123.456789');
-			
 			$precise = $original->toPrecision(3);
 			
 			$this->assertEquals(3, $precise->precision());
 			$this->assertEquals('123.456', $precise->value());
+		}
+		
+		/**
+		 * @throws DecimalException
+		 */
+		function testTrimmedValueHasNoTrailingZeros()
+		{
+			$original = ImmutableDecimal::from('123.456789', 8);
+			$precise = $original->toPrecision(3);
+			
+			$this->assertEquals('123.456789', $original->valueTrimmed());
+			$this->assertEquals('123.456', $precise->valueTrimmed(3));
+			$this->assertEquals('123', $precise->valueTrimmed(0));
+			$this->assertEquals('123.00000000', d8('123')->value());
+			$this->assertEquals('123', d8('123')->valueTrimmed());
 		}
 		
 		/**
@@ -302,6 +316,9 @@
 			$this->assertEquals($expected, $actual);
 		}
 		
+		/**
+		 * @throws DecimalException
+		 */
 		function testAbsoluteWorks()
 		{
 			$this->assertEquals('123.45', d2('-123.45')->absolute()->value());

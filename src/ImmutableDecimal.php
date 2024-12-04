@@ -1,5 +1,6 @@
-<?php /** @noinspection PhpMissingReturnTypeInspection */
-	
+<?php
+	/** @noinspection PhpUnused */
+	/** @noinspection PhpMissingReturnTypeInspection */
 	/** @noinspection PhpReturnDocTypeMismatchInspection */
 	
 	namespace YetAnother;
@@ -56,10 +57,10 @@
 		}
 
 		/**
-		 * Converts a mixed input value a decimal string value usable in the BC math library.
+		 * Converts a mixed input value to a decimal string value usable in the BC math library.
 		 * @param mixed $value
 		 * @param int|null $precision
-		 * @return self
+		 * @return string
 		 * @throws DecimalException
 		 */
 		public static function valueFrom(mixed $value, ?int $precision = null): string
@@ -114,7 +115,7 @@
 		 * @return static
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		private function similar(mixed $value)
+		private function similar(mixed $value): static
 		{
 			return new static($value, $this->precision);
 		}
@@ -123,10 +124,10 @@
 		 * Prints the value with an optional custom precision.
 		 * @param string $format
 		 * @param int|null $precision
-		 * @return self
+		 * @return static
 		 * @noinspection PhpUnused
 		 */
-		public function printValue(string $format = '%s', ?int $precision = null): self
+		public function printValue(string $format = '%s', ?int $precision = null): static
 		{
 			printf($format, $this->value($precision));
 			return $this;
@@ -137,7 +138,7 @@
 		 * @param int|null $precision
 		 * @return static
 		 */
-		public function copy(?int $precision = null)
+		public function copy(?int $precision = null): static
 		{
 			return new static($this->value, $precision ?? $this->precision);
 		}
@@ -156,7 +157,7 @@
 		 * @param int $precision
 		 * @return static
 		 */
-		public function toPrecision(int $precision)
+		public function toPrecision(int $precision): static
 		{
 			$precision = max(0, $precision);
 			return new static($this->value, $precision);
@@ -173,6 +174,18 @@
 				return bcadd($this->value, 0, $precision);
 			return $this->value;
 		}
+		
+		/**
+		 * Gets the decimal value as a string, optionally formatted to a new precision factor and trimmed
+		 * of redundant fractional 0's.
+		 * @param int|null $precision
+		 * @return string
+		 */
+		public function valueTrimmed(?int $precision = null): string
+		{
+			$value = $precision !== null ? bcadd($this->value, 0, $precision) : $this->value;
+			return rtrim(rtrim($value, '0'), '.');
+		}
 
 		/**
 		 * Returns a new decimal with the value added to it.
@@ -181,7 +194,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function plus(mixed $value)
+		public function plus(mixed $value): static
 		{
 			return $this->similar(bcadd($this->value, static::valueFrom($value), $this->precision));
 		}
@@ -193,7 +206,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function minus(mixed $value)
+		public function minus(mixed $value): static
 		{
 			return $this->similar(bcsub($this->value, static::valueFrom($value), $this->precision));
 		}
@@ -205,7 +218,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function times(mixed $factor)
+		public function times(mixed $factor): static
 		{
 			return $this->similar(bcmul($this->value, static::valueFrom($factor), $this->precision));
 		}
@@ -216,7 +229,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function dividedBy(mixed $divisor)
+		public function dividedBy(mixed $divisor): static
 		{
 			return $this->similar(bcdiv($this->value, static::valueFrom($divisor), $this->precision));
 		}
@@ -228,7 +241,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpUnused
 		 */
-		public function over(mixed $divisor)
+		public function over(mixed $divisor): static
 		{
 			return $this->dividedBy($divisor);
 		}
@@ -240,7 +253,7 @@
 		 * @throws DecimalException
 		 * @noinspection PhpMissingReturnTypeInspection
 		 */
-		public function modulus(mixed $divisor)
+		public function modulus(mixed $divisor): static
 		{
 			return $this->similar(bcmod($this->value, static::valueFrom($divisor), $this->precision));
 		}
@@ -253,7 +266,7 @@
 		 * @noinspection PhpMissingReturnTypeInspection
 		 * @noinspection PhpUnused
 		 */
-		public function mod(mixed $divisor)
+		public function mod(mixed $divisor): static
 		{
 			return $this->modulus($divisor);
 		}
@@ -344,7 +357,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function min(mixed $value)
+		public function min(mixed $value): static
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) < 0 ? $this->value : $value);
@@ -356,7 +369,7 @@
 		 * @return static
 		 * @throws DecimalException
 		 */
-		public function max(mixed $value)
+		public function max(mixed $value): static
 		{
 			$value = static::valueFrom($value, $this->precision);
 			return $this->similar(bccomp($this->value, $value, $this->precision) > 0 ? $this->value : $value);
@@ -366,7 +379,7 @@
 		 * Clamps the value between a minimum and maximum.
 		 * @throws DecimalException
 		 */
-		public function clamp($min, $max)
+		public function clamp($min, $max): static
 		{
 			return $this->max($min)->min($max);
 		}
@@ -376,7 +389,7 @@
 		 * @param int $precision
 		 * @return static
 		 */
-		public function round(int $precision = 0)
+		public function round(int $precision = 0): static
 		{
 			$multiplier = bcpow(10, $precision + 1, 0);
 			$whole = bcmul($this->value, $multiplier, 0);
@@ -391,7 +404,7 @@
 		 * Returns the decimal, rounded down to the nearest whole number.
 		 * @return static
 		 */
-		public function floor()
+		public function floor(): static
 		{
 			return $this->similar(bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision));
 		}
@@ -400,7 +413,7 @@
 		 * Returns the decimal, rounded up to the nearest whole number.
 		 * @return static
 		 */
-		public function ceil()
+		public function ceil(): static
 		{
 			$floor = bcsub($this->value, bcmod($this->value, '1', $this->precision), $this->precision);
 			if (bccomp($this->value, $floor, $this->precision) !== 0)
@@ -443,6 +456,15 @@
 		public function isZero(): bool
 		{
 			return $this->equals(0);
+		}
+		
+		/**
+		 * Determines if the decimal is non-zero.
+		 * @throws DecimalException
+		 */
+		public function isNonZero(): bool
+		{
+			return $this->notEquals(0);
 		}
 		
 		/**
