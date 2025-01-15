@@ -5,12 +5,13 @@
 	
 	namespace YetAnother;
 
+	use JsonSerializable;
 	use Throwable;
 	
 	/**
 	 * Represents an immutable decimal value, defaulting to a high precision of six decimal places.
 	 */
-	class ImmutableDecimal
+	class ImmutableDecimal implements JsonSerializable
 	{
 		/** @var string $value */
 		protected string $value;
@@ -75,6 +76,23 @@
 			{
 				throw new DecimalException($exception->getMessage(), $exception->getCode(), $exception, $value);
 			}
+		}
+		
+		/**
+		 * Creates a Decimal from a JSON array, object or scalar.
+		 *
+		 * @param array|object|string|int|float $json
+		 * @param int|null $precision
+		 * @return static
+		 * @throws DecimalException
+		 */
+		public static function fromJson(mixed $json, ?int $precision = null): static
+		{
+			if (is_array($json))
+				return new static($json['value'], ($precision ?? $json['precision']) ?? self::DefaultPrecision);
+			else if (is_object($json))
+				return new static($json->value, ($precision ?? $json->precision) ?? self::DefaultPrecision);
+			return static::from($json, $precision);
 		}
 
 		/**
@@ -570,5 +588,18 @@
 			$format = $negative ? $negativeFormat : ($isZero ? $zeroFormat : $positiveFormat);
 			
 			return str_replace(['{currency}', '{value}'], [$currencySymbol, $number], $format);
+		}
+		
+		/**
+		 * Returns the JSON serializable representation of the decimal.
+		 *
+		 * @return array
+		 */
+		public function jsonSerialize(): array
+		{
+			return [
+				'value' => $this->value,
+				'precision' => $this->precision
+			];
 		}
 	}
