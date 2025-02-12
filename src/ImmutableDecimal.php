@@ -311,13 +311,19 @@
 		}
 
 		/**
-		 * Determines if the decimal is equal to another value.
+		 * Determines if the decimal is equal to another value. If the value is a Decimal, the largest precision
+		 * is used to compare the two values.
 		 * @param mixed $value
 		 * @return bool
 		 * @throws DecimalException
 		 */
 		public function equals(mixed $value): bool
 		{
+			if ($value instanceof self)
+			{
+				$precision = max($this->precision, $value->precision);
+				return bccomp($this->value, $value->value, $precision) == 0;
+			}
 			$value = static::valueFrom($value, $this->precision);
 			return bccomp($this->value, $value, $this->precision) == 0;
 		}
