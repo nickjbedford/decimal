@@ -105,6 +105,15 @@
 			$this->precision = max(0, $precision);
 			$this->value = bcadd($value, 0, $this->precision);
 		}
+		
+		/**
+		 * Returns a mutable copy of the decimal.
+		 * @return Decimal
+		 */
+		public function mutable(): Decimal
+		{
+			return new Decimal($this->value, $this->precision);
+		}
 
 		/**
 		 * Converts the decimal value to a string.
