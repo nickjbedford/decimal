@@ -501,6 +501,15 @@
 		}
 		
 		/**
+		 * Determines if the decimal is zero.
+		 * @throws DecimalException
+		 */
+		public function isZero(): bool
+		{
+			return $this->equals(0);
+		}
+		
+		/**
 		 * Determines if the decimal is non-zero.
 		 * @throws DecimalException
 		 */
