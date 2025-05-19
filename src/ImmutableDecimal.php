@@ -474,6 +474,15 @@
 		}
 		
 		/**
+		 * Determines if the decimal is zero or negative.
+		 * @throws DecimalException
+		 */
+		public function isZeroOrNegative(): bool
+		{
+			return $this->lessThanOrEqual(0);
+		}
+		
+		/**
 		 * Determines if the decimal is less than zero.
 		 * @throws DecimalException
 		 */
@@ -483,12 +492,12 @@
 		}
 		
 		/**
-		 * Determines if the decimal is zero.
+		 * Determines if the decimal is greater than or equal to zero.
 		 * @throws DecimalException
 		 */
-		public function isZero(): bool
+		public function isZeroOrPositive()
 		{
-			return $this->equals(0);
+			return $this->greaterThanOrEqual(0);
 		}
 		
 		/**
